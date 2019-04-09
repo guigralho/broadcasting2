@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import { NavController } from '@ionic/angular';
+import {Storage} from '@ionic/storage';
+
+const STORAGE_KEY = 'my_images';
 
 @Component({
     selector: 'app-home',
@@ -9,9 +12,21 @@ import { NavController } from '@ionic/angular';
 export class HomePage implements OnInit {
     images = [];
 
-    constructor(public navCtrl: NavController) { }
+    count: number;
 
-    ngOnInit() { }
+    constructor(
+        public navCtrl: NavController,
+        private storage: Storage,
+    ) { }
+
+    ngOnInit() {
+        this.count = 0;
+        this.storage.get(STORAGE_KEY).then(images => {
+            if (images) {
+                this.count = images.length;
+            }
+        });
+    }
 
 
 }
