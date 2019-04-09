@@ -1,36 +1,30 @@
-<ion-header>
+<ion-content padding id="page1">
+  <div class="spacer" style="width:300px;height:62px;" id="home-spacer1"></div>
+  <img src="assets/img/Sl7ZoABwQWBkJ47TkKWx_jw.svg" style="display:block;width:50%;height:auto;margin-left:auto;margin-right:auto;" />
+  <div class="spacer" style="width:300px;height:62px;" id="home-spacer2"></div>
+
   <ion-toolbar color="primary">
-    <ion-title>
-      Ionic Image Upload
-    </ion-title>
+    <ion-button fill="clear" expand="full" color="light" routerLink="/photograph" routerDirection="forward">
+      <ion-icon name="camera"></ion-icon>
+      &nbsp;Fotografar
+    </ion-button>
   </ion-toolbar>
-</ion-header>
- 
-<ion-content padding>
-  <h3 *ngIf="images.length == 0" text-center>Please Select Image!</h3>
- 
-  <ion-list>
-    <ion-item *ngFor="let img of images; index as pos" text-wrap>
-      <ion-thumbnail slot="start">
-        <ion-img [src]="img.path"></ion-img>
-      </ion-thumbnail>
-      <ion-label>
-        {{ img.name }}
-      </ion-label>
-      <ion-button slot="end" fill="clear" (click)="startUpload(img)">
-        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
-      </ion-button>
-      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
+  <div class="spacer" style="width:300px;height:1px;" id="home-spacer3"></div>
+  <ion-toolbar color="primary">
+    <ion-button fill="clear" expand="full" color="light" routerLink="/sync" routerDirection="forward">
+      <ion-icon name="sync"></ion-icon>
+      &nbsp;Sincronizar
+    </ion-button>
+  </ion-toolbar>
 </ion-content>
- 
+
 <ion-footer>
-  <ion-toolbar color="primary">
-    <ion-button fill="clear" expand="full" color="light" (click)="selectImage()">
-      <ion-icon slot="start" name="camera"></ion-icon>
-      Select Image</ion-button>
-  </ion-toolbar>
+  <div id="home-markdown1" style="text-align:center;" class="show-list-numbers-and-dots">
+    <p style="color:#000000;font-size:11px;">
+      Última sincronização 14/02/2019 as 14:27
+    </p>
+    <p style="color:#000000;font-size:11px;">
+      8 fotos pendentes
+    </p>
+  </div>
 </ion-footer>
