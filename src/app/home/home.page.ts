@@ -21,7 +21,8 @@ export class HomePage implements OnInit {
 
     ngOnInit() { }
 
-    ionViewWillEnter() {
+    ionTabsWillChange() {
+        console.log('asd');
         this.count = 0;
         this.storage.get(STORAGE_KEY).then(images => {
             if (images) {

@@ -37,6 +37,10 @@ export class SyncPage implements OnInit {
         });
     }
 
+    ionViewWillEnter() {
+        this.loadStoredImages();
+    }
+
     loadStoredImages() {
         this.storage.get(STORAGE_KEY).then(images => {
             if (images) {
