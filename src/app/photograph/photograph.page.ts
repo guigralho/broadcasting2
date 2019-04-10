@@ -145,6 +145,8 @@ export class PhotographPage implements OnInit {
             /*const filePath = this.file.dataDirectory + name;
             this.pictureTaken = this.pathForImage(filePath);*/
 
+            this.photoForm.reset();
+
             this.router.navigateByUrl('/tabs/sync');
         });
     }
