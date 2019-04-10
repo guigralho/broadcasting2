@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Camera} from '@ionic-native/camera/ngx';
-import {ActionSheetController, Platform, ToastController} from '@ionic/angular';
+import {ActionSheetController, LoadingController, Platform, ToastController} from '@ionic/angular';
 import {File, FileEntry} from '@ionic-native/file/ngx';
 import {HttpClient} from '@angular/common/http';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
@@ -26,7 +26,8 @@ export class SyncPage implements OnInit {
         private actionSheetController: ActionSheetController,
         private toastController: ToastController,
         private storage: Storage,
-        private platform: Platform
+        private platform: Platform,
+        private loadingController: LoadingController
     ) {
     }
 
@@ -42,9 +43,15 @@ export class SyncPage implements OnInit {
                 const arr = JSON.parse(images);
                 this.images = [];
                 for (const img of arr) {
-                    const filePath = this.file.dataDirectory + img;
+                    const filePath = this.file.dataDirectory + img.name;
                     const resPath = this.pathForImage(filePath);
-                    this.images.push({name: img, path: resPath, filePath: filePath});
+                    this.images.push({
+                        name: img.name,
+                        path: resPath,
+                        filePath: filePath,
+                        code: img.code,
+                        fullName: img.fullName
+                    });
                 }
             }
         });
@@ -72,7 +79,7 @@ export class SyncPage implements OnInit {
 
         this.storage.get(STORAGE_KEY).then(images => {
             const arr = JSON.parse(images);
-            const filtered = arr.filter(name => name !== imgEntry.name);
+            const filtered = arr.filter(name => name.name !== imgEntry.name);
             this.storage.set(STORAGE_KEY, JSON.stringify(filtered));
 
             const correctPath = imgEntry.filePath.substr(0, imgEntry.filePath.lastIndexOf('/') + 1);
@@ -83,10 +90,12 @@ export class SyncPage implements OnInit {
         });
     }
 
-    startUpload(imgEntry) {
+    startUpload(imgEntry, position) {
         this.file.resolveLocalFilesystemUrl(imgEntry.filePath)
             .then(entry => {
                 (<FileEntry>entry).file(file => this.readFile(file));
+
+                this.deleteImage(imgEntry, position);
             })
             .catch(err => {
                 this.presentToast('Error while reading file.');
@@ -107,15 +116,15 @@ export class SyncPage implements OnInit {
     }
 
     async uploadImageData(formData: FormData) {
-        /*const loading = await this.loadingController.create({
-            content: 'Uploading image...',
+        const loading = await this.loadingController.create({
+            message: 'Uploading image...',
         });
-        await loading.present();*/
+        await loading.present();
 
         this.http.post('http://localhost:8888/upload.php', formData)
             .pipe(
                 finalize(() => {
-                    // loading.dismiss();
+                    loading.dismiss();
                 })
             )
             .subscribe(res => {

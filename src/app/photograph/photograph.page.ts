@@ -1,13 +1,15 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Camera, CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx';
 import {ActionSheetController, LoadingController, Platform, ToastController} from '@ionic/angular';
-import {File, FileEntry} from '@ionic-native/file/ngx';
+import {File} from '@ionic-native/file/ngx';
 import {HttpClient} from '@angular/common/http';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {Storage} from '@ionic/storage';
 import {FilePath} from '@ionic-native/file-path/ngx';
 
 import {finalize} from 'rxjs/operators';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 const STORAGE_KEY = 'my_images';
 
@@ -20,6 +22,7 @@ export class PhotographPage implements OnInit {
 
     images = [];
     pictureTaken = '';
+    photoForm: FormGroup;
 
     constructor(
         private camera: Camera,
@@ -32,7 +35,14 @@ export class PhotographPage implements OnInit {
         private platform: Platform,
         private loadingController: LoadingController,
         private ref: ChangeDetectorRef,
-        private filePath: FilePath) {
+        private filePath: FilePath,
+        private formBuilder: FormBuilder,
+        private router: Router
+    ) {
+        this.photoForm = this.formBuilder.group({
+            'code': ['', Validators.required],
+            'name': ['', Validators.required],
+        });
     }
 
     ngOnInit() {}
@@ -57,12 +67,13 @@ export class PhotographPage implements OnInit {
     async selectImage() {
         const actionSheet = await this.actionSheetController.create({
             header: 'Select Image source',
-            buttons: [{
-                text: 'Load from Library',
-                handler: () => {
-                    this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-                }
-            },
+            buttons: [
+                {
+                    text: 'Load from Library',
+                    handler: () => {
+                        this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+                    }
+                },
                 {
                     text: 'Use Camera',
                     handler: () => {
@@ -121,64 +132,21 @@ export class PhotographPage implements OnInit {
     updateStoredImages(name) {
         this.storage.get(STORAGE_KEY).then(images => {
             const arr = JSON.parse(images);
+
+            const newArr = {name: name, code: this.photoForm.value.code, fullName: this.photoForm.value.name};
             if (!arr) {
-                const newImages = [name];
+                const newImages = [newArr];
                 this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
             } else {
-                arr.push(name);
+                arr.push(newArr);
                 this.storage.set(STORAGE_KEY, JSON.stringify(arr));
             }
 
-            const filePath = this.file.dataDirectory + name;
-            const resPath = this.pathForImage(filePath);
+            /*const filePath = this.file.dataDirectory + name;
+            this.pictureTaken = this.pathForImage(filePath);*/
 
-            this.pictureTaken = resPath;
-
-            const newEntry = {
-                name: name,
-                path: resPath,
-                filePath: filePath,
-                code: '',
-                fullName: ''
-            };
-
-            this.images = [newEntry, ...this.images];
-            this.ref.detectChanges(); // trigger change detection cycle
+            this.router.navigateByUrl('/tabs/sync');
         });
-    }
-
-    readFile(file: any) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const formData = new FormData();
-            const imgBlob = new Blob([reader.result], {
-                type: file.type
-            });
-            formData.append('file', imgBlob, file.name);
-            this.uploadImageData(formData);
-        };
-        reader.readAsArrayBuffer(file);
-    }
-
-    async uploadImageData(formData: FormData) {
-        /*const loading = await this.loadingController.create({
-            content: 'Uploading image...',
-        });
-        await loading.present();*/
-
-        this.http.post('http://localhost:8888/upload.php', formData)
-            .pipe(
-                finalize(() => {
-                    // loading.dismiss();
-                })
-            )
-            .subscribe(res => {
-                if (res['success']) {
-                    this.presentToast('File upload complete.');
-                } else {
-                    this.presentToast('File upload failed.');
-                }
-            });
     }
 
 }

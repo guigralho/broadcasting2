@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
     <ion-title>
       Sincronizar
     </ion-title>
@@ -18,9 +15,9 @@
         <ion-img [src]="img.path"></ion-img>
       </ion-thumbnail>
       <ion-label>
-        {{ img.name }}
+        {{ img.code }} - {{ img.fullName }}
       </ion-label>
-      <ion-button slot="end" fill="clear" (click)="startUpload(img)">
+      <ion-button slot="end" fill="clear" (click)="startUpload(img, pos)">
         <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
       </ion-button>
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">

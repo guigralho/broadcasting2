@@ -18,12 +18,16 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 
 import { IonicStorageModule } from '@ionic/storage';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
     imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
         HttpClientModule,
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [
         StatusBar,

@@ -1,8 +1,5 @@
 <ion-header>
     <ion-toolbar color="primary">
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
         <ion-title>
             Fotografar
         </ion-title>
@@ -10,7 +7,7 @@
 </ion-header>
 
 <ion-content padding>
-    <form id="fotografar-form1">
+    <form id="fotografar-form1" [formGroup]="photoForm">
         <ion-item>
             <ion-img [src]="pictureTaken"></ion-img>
         </ion-item>
@@ -18,21 +15,18 @@
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" placeholder="XCV420191" name="code"></ion-input>
+            <ion-input type="text" placeholder="XCV420191" formControlName="code"></ion-input>
         </ion-item>
         <div class="spacer" style="width:300px;height:24px;" id="fotografar-spacer8"></div>
         <ion-item id="fotografar-input2">
             <ion-label>
                 Nome
             </ion-label>
-            <ion-input type="text" placeholder="João da Silva" name="name"></ion-input>
+            <ion-input type="text" placeholder="João da Silva" formControlName="name"></ion-input>
         </ion-item>
-        <ion-button fill="solid" expand="full" color="primary" (click)="selectImage()">
+        <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
             <ion-icon slot="start" name="camera"></ion-icon>
             Selecione uma imagem
-        </ion-button>
-        <ion-button fill="solid" expand="full" color="success" >
-            Gravar
         </ion-button>
     </form>
 </ion-content>
