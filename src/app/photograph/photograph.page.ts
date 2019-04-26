@@ -23,6 +23,7 @@ export class PhotographPage implements OnInit {
     images = [];
     pictureTaken = '';
     photoForm: FormGroup;
+    photographer: string;
 
     constructor(
         private camera: Camera,
