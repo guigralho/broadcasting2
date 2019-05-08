@@ -11,10 +11,10 @@
 
   <ion-list>
     <ion-item *ngFor="let img of images; index as pos" text-wrap>
-      <ion-thumbnail slot="start">
+      <ion-thumbnail slot="start" (click)="editPhoto(img)">
         <ion-img [src]="img.path"></ion-img>
       </ion-thumbnail>
-      <ion-label>
+      <ion-label (click)="editPhoto(img)">
         {{ img.code }} - {{ img.fullName }}
       </ion-label>
       <ion-button slot="end" fill="clear" (click)="startUpload(img, pos)">

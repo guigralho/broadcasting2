@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Camera} from '@ionic-native/camera/ngx';
-import {ActionSheetController, LoadingController, Platform, ToastController} from '@ionic/angular';
+import {ActionSheetController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {File, FileEntry} from '@ionic-native/file/ngx';
 import {HttpClient} from '@angular/common/http';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {Storage} from '@ionic/storage';
 import {finalize} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {EditPhotographPage} from '../edit-photograph/edit-photograph.page';
 
 const STORAGE_KEY = 'my_images';
 
@@ -19,22 +21,69 @@ export class SyncPage implements OnInit {
     images = [];
 
     constructor(
+        public router: Router,
         private camera: Camera,
         private file: File,
         private http: HttpClient,
         private webview: WebView,
         private actionSheetController: ActionSheetController,
         private toastController: ToastController,
+        private modalController: ModalController,
         private storage: Storage,
         private platform: Platform,
         private loadingController: LoadingController
-    ) {
-    }
+    ) { }
 
     ngOnInit() {
         this.platform.ready().then(() => {
             this.loadStoredImages();
         });
+    }
+
+    async editPhoto(photo) {
+        const modal =
+            await this.modalController.create({
+                component: EditPhotographPage,
+                componentProps: {
+                    timestamp: photo.timestamp,
+                    name: photo.fullName,
+                    code: photo.code,
+                    photographer: photo.photographer,
+                    event: photo.event,
+                    img: photo.path,
+                }
+            });
+
+        modal.onDidDismiss().then(result => {
+            if (result !== null) {
+                const editedImage = result.data;
+
+                for (const image of this.images) {
+                    if (image.timestamp === editedImage.timestamp) {
+                        image.fullName = editedImage.name;
+                        image.photographer = editedImage.photographer;
+                    }
+                }
+
+                this.storage.get(STORAGE_KEY).then(images => {
+                    if (images) {
+                        const storedImages = JSON.parse(images);
+
+                        for (const image of storedImages) {
+                            if (image.timestamp === editedImage.timestamp) {
+                                image.fullName = editedImage.name;
+                                image.photographer = editedImage.photographer;
+                            }
+                        }
+
+                        this.storage.remove(STORAGE_KEY);
+                        this.storage.set(STORAGE_KEY, storedImages);
+                    }
+                });
+            }
+        });
+
+        return await modal.present();
     }
 
     ionViewWillEnter() {
@@ -54,6 +103,9 @@ export class SyncPage implements OnInit {
                         path: resPath,
                         filePath: filePath,
                         code: img.code,
+                        event: img.event,
+                        timestamp: img.timestamp,
+                        photographer: img.photographer,
                         fullName: img.fullName
                     });
                 }
