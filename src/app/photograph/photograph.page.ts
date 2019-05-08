@@ -25,6 +25,7 @@ export class PhotographPage implements OnInit {
     photoForm: FormGroup;
     event: string;
     photographer: string;
+    code: string;
 
     constructor(
         private camera: Camera,
@@ -52,10 +53,14 @@ export class PhotographPage implements OnInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
+        this.event = '';
+        this.photographer = 'as';
         this.storage.get('photograph_info').then(info => {
             this.event = info.event;
             this.photographer = info.name;
         });
+
+        this.code = Math.random().toString(36).substring(7);
     }
 
     pathForImage(img) {

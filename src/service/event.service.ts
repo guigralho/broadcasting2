@@ -9,6 +9,6 @@ export class EventService {
     ) {}
 
     getEvents() {
-        return this.http.get(`http://192.168.0.10:8000/api/events`);
+        return this.http.get(`http://165.22.129.37/api/events`);
     }
 }

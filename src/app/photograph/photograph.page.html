@@ -8,9 +8,6 @@
 
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
-        <ion-item>
-            <ion-img [src]="pictureTaken"></ion-img>
-        </ion-item>
         <ion-item id="fotografar-input4">
             <ion-label>
                 Evento
@@ -28,7 +25,7 @@
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" placeholder="XCV420191" formControlName="code"></ion-input>
+            <ion-input type="text" placeholder="XCV420191" formControlName="code" [value]="code"></ion-input>
         </ion-item>
         <ion-item id="fotografar-input2">
             <ion-label>

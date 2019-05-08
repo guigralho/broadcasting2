@@ -149,7 +149,7 @@ export class SyncPage implements OnInit {
     startUpload(imgEntry, position) {
         this.file.resolveLocalFilesystemUrl(imgEntry.filePath)
             .then(entry => {
-                (<FileEntry>entry).file(file => this.readFile(file));
+                (<FileEntry>entry).file(file => this.readFile(imgEntry, file));
 
                 this.deleteImage(imgEntry, position);
             })
@@ -158,13 +158,19 @@ export class SyncPage implements OnInit {
             });
     }
 
-    readFile(file: any) {
+    readFile(imgEntry, file: any) {
         const reader = new FileReader();
         reader.onloadend = () => {
             const formData = new FormData();
             const imgBlob = new Blob([reader.result], {
                 type: file.type
             });
+            formData.append('name', imgEntry.fullName);
+            formData.append('code', imgEntry.code);
+            formData.append('event', imgEntry.event);
+            formData.append('photographer', imgEntry.photographer);
+            /*formData.append('congregation', imgEntry.congregation);
+            formData.append('phone', imgEntry.phone);*/
             formData.append('file', imgBlob, file.name);
             this.uploadImageData(formData);
         };
@@ -177,7 +183,10 @@ export class SyncPage implements OnInit {
         });
         await loading.present();
 
-        this.http.post('http://localhost:8888/upload.php', formData)
+        // https://webhook.site/09ec3ce0-1fff-4a16-b3d2-794611283f42
+        // http://165.22.129.37/api/upload
+
+        this.http.post('http://165.22.129.37/api/upload', formData)
             .pipe(
                 finalize(() => {
                     loading.dismiss();
@@ -185,9 +194,9 @@ export class SyncPage implements OnInit {
             )
             .subscribe(res => {
                 if (res['success']) {
-                    this.presentToast('File upload complete.');
+                    this.presentToast('File upload complete!');
                 } else {
-                    this.presentToast('File upload failed.');
+                    this.presentToast('File upload failed :(');
                 }
             });
     }

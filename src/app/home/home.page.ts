@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
 
     count: number;
     event: string;
-    fotografo: string;
+    photographer: string;
 
     constructor(
         public navCtrl: NavController,
@@ -29,7 +29,7 @@ export class HomePage implements OnInit {
     ionViewWillEnter() {
         this.storage.get('photograph_info').then(info => {
             this.event = info.event;
-            this.fotografo = info.name;
+            this.photographer = info.name;
         });
 
         this.eventService.getEvents().subscribe(response => {
@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
     saveInfo() {
         this.storage.set('photograph_info', {
             event: this.event,
-            name: this.fotografo,
+            name: this.photographer,
         });
     }
 }
