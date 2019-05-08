@@ -77,7 +77,7 @@ export class SyncPage implements OnInit {
                         }
 
                         this.storage.remove(STORAGE_KEY);
-                        this.storage.set(STORAGE_KEY, storedImages);
+                        this.storage.set(STORAGE_KEY, JSON.stringify(storedImages));
                     }
                 });
             }
