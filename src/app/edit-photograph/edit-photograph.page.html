@@ -1,15 +1,16 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>
-            Fotografar
+            Editar Fotografia
         </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
+        <ion-input type="hidden" formControlName="timestamp" readonly [value]="timestamp"></ion-input>
         <ion-item>
-            <ion-img [src]="pictureTaken"></ion-img>
+            <ion-img [src]="image"></ion-img>
         </ion-item>
         <ion-item id="fotografar-input4">
             <ion-label>
@@ -17,28 +18,24 @@
             </ion-label>
             <ion-input type="text" formControlName="event" readonly [value]="event"></ion-input>
         </ion-item>
-        <ion-item id="fotografar-input3" *ngIf="photographer != ''">
+        <ion-item id="fotografar-input3">
             <ion-label>
                 Fotógrafo
             </ion-label>
-            <ion-input type="text" formControlName="photographer" readonly [value]="photographer"></ion-input>
+            <ion-input type="text" formControlName="photographer" [value]="photographer"></ion-input>
         </ion-item>
-        <div class="spacer" style="width:300px;height:24px;" id="fotografar-spacer8"></div>
         <ion-item id="fotografar-input1">
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" placeholder="XCV420191" formControlName="code"></ion-input>
+            <ion-input type="text" placeholder="XCV420191" formControlName="code" readonly [value]="code"></ion-input>
         </ion-item>
         <ion-item id="fotografar-input2">
             <ion-label>
                 Nome
             </ion-label>
-            <ion-input type="text" placeholder="João da Silva" formControlName="name"></ion-input>
+            <ion-input type="text" placeholder="João da Silva" formControlName="name" [value]="name"></ion-input>
         </ion-item>
-        <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
-            <ion-icon slot="start" name="camera"></ion-icon>
-            Selecione uma imagem
-        </ion-button>
+        <button (click)="dismiss()">Editar</button>
     </form>
 </ion-content>

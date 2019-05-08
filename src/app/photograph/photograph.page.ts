@@ -23,6 +23,7 @@ export class PhotographPage implements OnInit {
     images = [];
     pictureTaken = '';
     photoForm: FormGroup;
+    event: string;
     photographer: string;
 
     constructor(
@@ -43,10 +44,19 @@ export class PhotographPage implements OnInit {
         this.photoForm = this.formBuilder.group({
             'code': ['', Validators.required],
             'name': ['', Validators.required],
+            'event': ['', Validators.required],
+            'photographer': [''],
         });
     }
 
     ngOnInit() {}
+
+    ionViewWillEnter() {
+        this.storage.get('photograph_info').then(info => {
+            this.event = info.event;
+            this.photographer = info.name;
+        });
+    }
 
     pathForImage(img) {
         if (img === null) {
@@ -134,7 +144,14 @@ export class PhotographPage implements OnInit {
         this.storage.get(STORAGE_KEY).then(images => {
             const arr = JSON.parse(images);
 
-            const newArr = {name: name, code: this.photoForm.value.code, fullName: this.photoForm.value.name};
+            const newArr = {
+                timestamp: new Date().getTime(),
+                name: name,
+                event: this.event,
+                photographer: this.photographer,
+                code: this.photoForm.value.code,
+                fullName: this.photoForm.value.name
+            };
             if (!arr) {
                 const newImages = [newArr];
                 this.storage.set(STORAGE_KEY, JSON.stringify(newImages));

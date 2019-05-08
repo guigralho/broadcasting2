@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { NavController } from '@ionic/angular';
 import {Storage} from '@ionic/storage';
+import {EventService} from '../../service/event.service';
 
 const STORAGE_KEY = 'my_images';
 
@@ -14,22 +15,28 @@ export class HomePage implements OnInit {
     events: any;
 
     count: number;
-    event_id: string;
+    event: string;
     fotografo: string;
 
     constructor(
         public navCtrl: NavController,
+        public eventService: EventService,
         private storage: Storage,
     ) { }
 
-    ngOnInit() {
-        this.events = [{
-            id: 1,
-            name: 'Treinamento Aeroporto'
-        }, {
-            id: 2,
-            name: 'Treinamento Guia de Passeios'
-        }];
+    ngOnInit() {}
+
+    ionViewWillEnter() {
+        this.storage.get('photograph_info').then(info => {
+            this.event = info.event;
+            this.fotografo = info.name;
+        });
+
+        this.eventService.getEvents().subscribe(response => {
+            this.events = response;
+        }, error => {
+            alert(error.error);
+        });
     }
 
     ionTabsWillChange() {
@@ -44,7 +51,7 @@ export class HomePage implements OnInit {
 
     saveInfo() {
         this.storage.set('photograph_info', {
-            event_id: this.event_id,
+            event: this.event,
             name: this.fotografo,
         });
     }

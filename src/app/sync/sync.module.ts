@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { SyncPage } from './sync.page';
+import {EditPhotographPageModule} from '../edit-photograph/edit-photograph.module';
 
 const routes: Routes = [
   {
@@ -15,12 +16,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  declarations: [SyncPage],
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: SyncPage }])
-  ],
-  declarations: [SyncPage]
+    RouterModule.forChild(routes),
+    EditPhotographPageModule
+  ]
 })
 export class SyncPageModule {}
