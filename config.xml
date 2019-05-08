@@ -2,7 +2,7 @@
 <widget id="com.broadcasting.interaktiv.jw" version="0.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>JW Broadcasting</name>
     <description>JW Broadcasting</description>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.0.9:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -88,6 +88,7 @@
     <plugin name="cordova-plugin-ionic-webview" spec="~3.1.2" />
     <plugin name="cordova-sqlite-storage" spec="~3.1.0" />
     <plugin name="cordova-plugin-filepath" spec="~1.5.1" />
+    <allow-navigation href="http://192.168.0.9:8100" sessionid="efd37976" />
     <engine name="android" spec="7.1.4" />
     <engine name="ios" spec="^4.5.5" />
 </widget>
