@@ -152,6 +152,7 @@ export class PhotographPage implements OnInit {
                 code: this.photoForm.value.code,
                 fullName: this.photoForm.value.name
             };
+
             if (!arr) {
                 const newImages = [newArr];
                 this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
@@ -160,11 +161,10 @@ export class PhotographPage implements OnInit {
                 this.storage.set(STORAGE_KEY, JSON.stringify(arr));
             }
 
-            /*const filePath = this.file.dataDirectory + name;
-            this.pictureTaken = this.pathForImage(filePath);*/
+            const filePath = this.file.dataDirectory + name;
+            this.pictureTaken = this.pathForImage(filePath);
 
             this.photoForm.reset();
-
             this.router.navigateByUrl('/tabs/sync');
         });
     }

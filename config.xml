@@ -90,5 +90,5 @@
     <plugin name="cordova-plugin-filepath" spec="~1.5.1" />
     <engine name="android" spec="7.1.4" />
     <engine name="ios" spec="^4.5.5" />
-    <allow-navigation href="http://192.168.0.10:8100" sessionid="00f13a18" />
+    <allow-navigation href="http://192.168.0.10:8100" sessionid="ff59cb77" />
 </widget>
