@@ -53,8 +53,6 @@ export class PhotographPage implements OnInit {
     ngOnInit() {}
 
     ionViewWillEnter() {
-        this.event = '';
-        this.photographer = 'as';
         this.storage.get('photograph_info').then(info => {
             this.event = info.event;
             this.photographer = info.name;
