@@ -1,16 +1,7 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
-import {Camera, CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx';
-import {ActionSheetController, LoadingController, ModalController, NavParams, Platform, ToastController} from '@ionic/angular';
-import {File} from '@ionic-native/file/ngx';
-import {HttpClient} from '@angular/common/http';
-import {WebView} from '@ionic-native/ionic-webview/ngx';
-import {Storage} from '@ionic/storage';
-import {FilePath} from '@ionic-native/file-path/ngx';
+import {Component, Input, OnInit} from '@angular/core';
+import {ModalController, NavParams} from '@ionic/angular';
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-
-const STORAGE_KEY = 'my_images';
 
 @Component({
     selector: 'app-edit-photograph',
@@ -25,7 +16,9 @@ export class EditPhotographPage implements OnInit {
     @Input() photographer: string;
     @Input() code: string;
     @Input() name: string;
-    @Input() image: string;
+    @Input() img: string;
+    @Input() phone: string;
+    @Input() congregation: string;
 
     constructor(
         private modalController: ModalController,
@@ -43,6 +36,8 @@ export class EditPhotographPage implements OnInit {
             'event': [this.event, Validators.required],
             'photographer': [this.photographer],
             'timestamp': [this.timestamp],
+            'phone': [this.phone],
+            'congregation': [this.congregation],
         });
     }
 

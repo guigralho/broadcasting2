@@ -50,7 +50,9 @@ export class SyncPage implements OnInit {
                     code: photo.code,
                     photographer: photo.photographer,
                     event: photo.event,
-                    img: photo.path,
+                    phone: photo.phone,
+                    congregation: photo.congregation,
+                    img: photo.filePath,
                 }
             });
 
@@ -62,6 +64,8 @@ export class SyncPage implements OnInit {
                     if (image.timestamp === editedImage.timestamp) {
                         image.fullName = editedImage.name;
                         image.photographer = editedImage.photographer;
+                        image.phone = editedImage.phone;
+                        image.congregation = editedImage.congregation;
                     }
                 }
 
@@ -73,6 +77,8 @@ export class SyncPage implements OnInit {
                             if (image.timestamp === editedImage.timestamp) {
                                 image.fullName = editedImage.name;
                                 image.photographer = editedImage.photographer;
+                                image.phone = editedImage.phone;
+                                image.congregation = editedImage.congregation;
                             }
                         }
 
@@ -103,6 +109,8 @@ export class SyncPage implements OnInit {
                         path: resPath,
                         filePath: filePath,
                         code: img.code,
+                        phone: img.phone,
+                        congregation: img.congregation,
                         event: img.event,
                         timestamp: img.timestamp,
                         photographer: img.photographer,

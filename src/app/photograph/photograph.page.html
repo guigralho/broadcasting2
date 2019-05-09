@@ -8,30 +8,42 @@
 
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
-        <ion-item id="fotografar-input4">
+        <ion-item>
             <ion-label>
                 Evento
             </ion-label>
             <ion-input type="text" formControlName="event" readonly [value]="event"></ion-input>
         </ion-item>
-        <ion-item id="fotografar-input3" *ngIf="photographer != ''">
+        <ion-item *ngIf="photographer != ''">
             <ion-label>
                 Fotógrafo
             </ion-label>
             <ion-input type="text" formControlName="photographer" readonly [value]="photographer"></ion-input>
         </ion-item>
         <div class="spacer" style="width:300px;height:24px;" id="fotografar-spacer8"></div>
-        <ion-item id="fotografar-input1">
+        <ion-item>
             <ion-label>
                 Código
             </ion-label>
             <ion-input type="text" placeholder="XCV420191" formControlName="code" [value]="code"></ion-input>
         </ion-item>
-        <ion-item id="fotografar-input2">
+        <ion-item>
             <ion-label>
                 Nome
             </ion-label>
-            <ion-input type="text" placeholder="João da Silva" formControlName="name"></ion-input>
+            <ion-input type="text" placeholder="Nome" formControlName="name"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                Telefone
+            </ion-label>
+            <ion-input type="text" placeholder="Telefone" formControlName="phone"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                Congregação
+            </ion-label>
+            <ion-input type="text" placeholder="Congregação" formControlName="congregation"></ion-input>
         </ion-item>
         <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
             <ion-icon slot="start" name="camera"></ion-icon>

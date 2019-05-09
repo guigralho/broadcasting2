@@ -47,12 +47,16 @@ export class PhotographPage implements OnInit {
             'name': ['', Validators.required],
             'event': ['', Validators.required],
             'photographer': [''],
+            'phone': [''],
+            'congregation': [''],
         });
     }
 
     ngOnInit() {}
 
     ionViewWillEnter() {
+        this.event = '';
+        this.photographer = '';
         this.storage.get('photograph_info').then(info => {
             this.event = info.event;
             this.photographer = info.name;
@@ -153,6 +157,8 @@ export class PhotographPage implements OnInit {
                 event: this.event,
                 photographer: this.photographer,
                 code: this.photoForm.value.code,
+                phone: this.photoForm.value.phone,
+                congregation: this.photoForm.value.congregation,
                 fullName: this.photoForm.value.name
             };
 

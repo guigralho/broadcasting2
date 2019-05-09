@@ -9,9 +9,9 @@
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
         <ion-input type="hidden" formControlName="timestamp" readonly [value]="timestamp"></ion-input>
-        <ion-item>
-            <ion-img [src]="image"></ion-img>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-img [src]="img"></ion-img>-->
+        <!--</ion-item>-->
         <ion-item id="fotografar-input4">
             <ion-label>
                 Evento
@@ -36,7 +36,19 @@
             </ion-label>
             <ion-input type="text" placeholder="João da Silva" formControlName="name" [value]="name"></ion-input>
         </ion-item>
-        <ion-button fill="solid" expand="full" color="primary" (click)="dismiss()">
+        <ion-item>
+            <ion-label>
+                Telefone
+            </ion-label>
+            <ion-input type="text" placeholder="Telefone" formControlName="phone"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                Congregação
+            </ion-label>
+            <ion-input type="text" placeholder="Congregação" formControlName="congregation"></ion-input>
+        </ion-item>
+        <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="dismiss()">
             Editar
         </ion-button>
     </form>
