@@ -42,8 +42,7 @@ export class SyncPage implements OnInit {
 
     async editPhoto(photo) {
         const d = new Date(photo.timestamp);
-        let fullDate = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-
+        const fullDate = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
 
         const modal =
             await this.modalController.create({
@@ -166,6 +165,9 @@ export class SyncPage implements OnInit {
             const imgBlob = new Blob([reader.result], {
                 type: file.type
             });
+
+            const fullDate = new Date(imgEntry.timestamp);
+
             formData.append('name', imgEntry.fullName);
             formData.append('code', imgEntry.code);
             formData.append('event', imgEntry.event);
@@ -173,7 +175,7 @@ export class SyncPage implements OnInit {
             formData.append('congregation', imgEntry.congregation);
             formData.append('phone', imgEntry.phone);
             formData.append('file', imgBlob, file.name);
-            formData.append('timestamp', imgEntry.timestamp);
+            formData.append('timestamp', fullDate.getFullYear() + '-' + (fullDate.getMonth() + 1) + '-' + fullDate.getDate());
             this.uploadImageData(formData);
         };
         reader.readAsArrayBuffer(file);
