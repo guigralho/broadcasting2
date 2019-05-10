@@ -26,6 +26,7 @@ export class PhotographPage implements OnInit {
     event: string;
     photographer: string;
     code: string;
+    photoDate: string;
 
     constructor(
         private camera: Camera,
@@ -63,6 +64,8 @@ export class PhotographPage implements OnInit {
         });
 
         this.code = Math.random().toString(36).substring(7);
+        const date = new Date();
+        this.photoDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     }
 
     pathForImage(img) {
@@ -109,7 +112,7 @@ export class PhotographPage implements OnInit {
 
     takePicture(sourceType: PictureSourceType) {
         const options: CameraOptions = {
-            quality: 100,
+            quality: 25,
             sourceType: sourceType,
             saveToPhotoAlbum: false,
             correctOrientation: true

@@ -25,7 +25,7 @@
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" placeholder="XCV420191" formControlName="code" [value]="code"></ion-input>
+            <ion-input type="text" readonly formControlName="code" [value]="code"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
@@ -37,13 +37,18 @@
             <ion-label>
                 Telefone
             </ion-label>
-            <ion-input type="text" placeholder="Telefone" formControlName="phone"></ion-input>
+            <ion-input type="tel" placeholder="Telefone" formControlName="phone"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
                 Congregação
             </ion-label>
             <ion-input type="text" placeholder="Congregação" formControlName="congregation"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                Data da foto {{ photoDate }}
+            </ion-label>
         </ion-item>
         <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
             <ion-icon slot="start" name="camera"></ion-icon>

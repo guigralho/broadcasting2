@@ -41,18 +41,23 @@ export class SyncPage implements OnInit {
     }
 
     async editPhoto(photo) {
+        const d = new Date(photo.timestamp);
+        let fullDate = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+
+
         const modal =
             await this.modalController.create({
                 component: EditPhotographPage,
                 componentProps: {
                     timestamp: photo.timestamp,
+                    fullDate: fullDate,
                     name: photo.fullName,
                     code: photo.code,
                     photographer: photo.photographer,
                     event: photo.event,
                     phone: photo.phone,
                     congregation: photo.congregation,
-                    img: photo.filePath,
+                    img: photo.path,
                 }
             });
 
@@ -60,32 +65,20 @@ export class SyncPage implements OnInit {
             if (result !== null) {
                 const editedImage = result.data;
 
-                for (const image of this.images) {
-                    if (image.timestamp === editedImage.timestamp) {
-                        image.fullName = editedImage.name;
-                        image.photographer = editedImage.photographer;
-                        image.phone = editedImage.phone;
-                        image.congregation = editedImage.congregation;
-                    }
-                }
-
                 this.storage.get(STORAGE_KEY).then(images => {
-                    if (images) {
-                        const storedImages = JSON.parse(images);
+                    const arr = JSON.parse(images);
+                    arr.find(item => item.timestamp == editedImage.timestamp).fullName = editedImage.name;
+                    arr.find(item => item.timestamp == editedImage.timestamp).photographer = editedImage.photographer;
+                    arr.find(item => item.timestamp == editedImage.timestamp).phone = editedImage.phone;
+                    arr.find(item => item.timestamp == editedImage.timestamp).congregation = editedImage.congregation;
 
-                        for (const image of storedImages) {
-                            if (image.timestamp === editedImage.timestamp) {
-                                image.fullName = editedImage.name;
-                                image.photographer = editedImage.photographer;
-                                image.phone = editedImage.phone;
-                                image.congregation = editedImage.congregation;
-                            }
-                        }
+                    this.storage.remove(STORAGE_KEY);
+                    this.storage.set(STORAGE_KEY, JSON.stringify(arr));
 
-                        this.storage.remove(STORAGE_KEY);
-                        this.storage.set(STORAGE_KEY, JSON.stringify(storedImages));
-                    }
+                    this.loadStoredImages();
                 });
+
+
             }
         });
 
@@ -177,9 +170,10 @@ export class SyncPage implements OnInit {
             formData.append('code', imgEntry.code);
             formData.append('event', imgEntry.event);
             formData.append('photographer', imgEntry.photographer);
-            /*formData.append('congregation', imgEntry.congregation);
-            formData.append('phone', imgEntry.phone);*/
+            formData.append('congregation', imgEntry.congregation);
+            formData.append('phone', imgEntry.phone);
             formData.append('file', imgBlob, file.name);
+            formData.append('timestamp', imgEntry.timestamp);
             this.uploadImageData(formData);
         };
         reader.readAsArrayBuffer(file);

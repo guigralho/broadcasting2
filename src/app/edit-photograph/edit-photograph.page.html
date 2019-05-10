@@ -9,9 +9,9 @@
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
         <ion-input type="hidden" formControlName="timestamp" readonly [value]="timestamp"></ion-input>
-        <!--<ion-item>-->
-            <!--<ion-img [src]="img"></ion-img>-->
-        <!--</ion-item>-->
+        <ion-item slot="start">
+            <ion-img [src]="img"></ion-img>
+        </ion-item>
         <ion-item id="fotografar-input4">
             <ion-label>
                 Evento
@@ -28,25 +28,30 @@
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" placeholder="XCV420191" formControlName="code" readonly [value]="code"></ion-input>
+            <ion-input type="text" formControlName="code" readonly [value]="code"></ion-input>
         </ion-item>
         <ion-item id="fotografar-input2">
             <ion-label>
                 Nome
             </ion-label>
-            <ion-input type="text" placeholder="João da Silva" formControlName="name" [value]="name"></ion-input>
+            <ion-input type="text" placeholder="Nome" formControlName="name" [value]="name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
                 Telefone
             </ion-label>
-            <ion-input type="text" placeholder="Telefone" formControlName="phone"></ion-input>
+            <ion-input type="tel" placeholder="Telefone" formControlName="phone"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
                 Congregação
             </ion-label>
             <ion-input type="text" placeholder="Congregação" formControlName="congregation"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label>
+                Data da foto {{ fullDate }}
+            </ion-label>
         </ion-item>
         <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="dismiss()">
             Editar

@@ -19,6 +19,7 @@ export class EditPhotographPage implements OnInit {
     @Input() img: string;
     @Input() phone: string;
     @Input() congregation: string;
+    @Input() fullDate: string;
 
     constructor(
         private modalController: ModalController,
