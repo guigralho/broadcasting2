@@ -23,7 +23,10 @@ export class PhotographPage implements OnInit {
     images = [];
     pictureTaken = '';
     photoForm: FormGroup;
+    event: string;
     photographer: string;
+    code: string;
+    photoDate: string;
 
     constructor(
         private camera: Camera,
@@ -43,10 +46,27 @@ export class PhotographPage implements OnInit {
         this.photoForm = this.formBuilder.group({
             'code': ['', Validators.required],
             'name': ['', Validators.required],
+            'event': ['', Validators.required],
+            'photographer': [''],
+            'phone': [''],
+            'congregation': [''],
         });
     }
 
     ngOnInit() {}
+
+    ionViewWillEnter() {
+        this.event = '';
+        this.photographer = '';
+        this.storage.get('photograph_info').then(info => {
+            this.event = info.event;
+            this.photographer = info.name;
+        });
+
+        this.code = Math.random().toString(36).substring(7);
+        const date = new Date();
+        this.photoDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    }
 
     pathForImage(img) {
         if (img === null) {
@@ -92,7 +112,7 @@ export class PhotographPage implements OnInit {
 
     takePicture(sourceType: PictureSourceType) {
         const options: CameraOptions = {
-            quality: 100,
+            quality: 25,
             sourceType: sourceType,
             saveToPhotoAlbum: false,
             correctOrientation: true
@@ -134,7 +154,17 @@ export class PhotographPage implements OnInit {
         this.storage.get(STORAGE_KEY).then(images => {
             const arr = JSON.parse(images);
 
-            const newArr = {name: name, code: this.photoForm.value.code, fullName: this.photoForm.value.name};
+            const newArr = {
+                timestamp: new Date().getTime(),
+                name: name,
+                event: this.event,
+                photographer: this.photographer,
+                code: this.photoForm.value.code,
+                phone: this.photoForm.value.phone,
+                congregation: this.photoForm.value.congregation,
+                fullName: this.photoForm.value.name
+            };
+
             if (!arr) {
                 const newImages = [newArr];
                 this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
@@ -143,11 +173,10 @@ export class PhotographPage implements OnInit {
                 this.storage.set(STORAGE_KEY, JSON.stringify(arr));
             }
 
-            /*const filePath = this.file.dataDirectory + name;
-            this.pictureTaken = this.pathForImage(filePath);*/
+            const filePath = this.file.dataDirectory + name;
+            this.pictureTaken = this.pathForImage(filePath);
 
             this.photoForm.reset();
-
             this.router.navigateByUrl('/tabs/sync');
         });
     }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, RouteReuseStrategy, Routes } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, NavParams} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -19,11 +19,15 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {EventService} from '../service/event.service';
 
 @NgModule({
     declarations: [AppComponent],
     entryComponents: [],
-    imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
         HttpClientModule,
         IonicStorageModule.forRoot(),
         FormsModule,
@@ -36,6 +40,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         Camera,
         File,
         WebView,
+        EventService,
         FilePath
     ],
     bootstrap: [AppComponent]

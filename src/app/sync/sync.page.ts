@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Camera} from '@ionic-native/camera/ngx';
-import {ActionSheetController, LoadingController, Platform, ToastController} from '@ionic/angular';
+import {ActionSheetController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
 import {File, FileEntry} from '@ionic-native/file/ngx';
 import {HttpClient} from '@angular/common/http';
 import {WebView} from '@ionic-native/ionic-webview/ngx';
 import {Storage} from '@ionic/storage';
 import {finalize} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {EditPhotographPage} from '../edit-photograph/edit-photograph.page';
 
 const STORAGE_KEY = 'my_images';
 
@@ -19,22 +21,67 @@ export class SyncPage implements OnInit {
     images = [];
 
     constructor(
+        public router: Router,
         private camera: Camera,
         private file: File,
         private http: HttpClient,
         private webview: WebView,
         private actionSheetController: ActionSheetController,
         private toastController: ToastController,
+        private modalController: ModalController,
         private storage: Storage,
         private platform: Platform,
         private loadingController: LoadingController
-    ) {
-    }
+    ) { }
 
     ngOnInit() {
         this.platform.ready().then(() => {
             this.loadStoredImages();
         });
+    }
+
+    async editPhoto(photo) {
+        const d = new Date(photo.timestamp);
+        const fullDate = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+
+        const modal =
+            await this.modalController.create({
+                component: EditPhotographPage,
+                componentProps: {
+                    timestamp: photo.timestamp,
+                    fullDate: fullDate,
+                    name: photo.fullName,
+                    code: photo.code,
+                    photographer: photo.photographer,
+                    event: photo.event,
+                    phone: photo.phone,
+                    congregation: photo.congregation,
+                    img: photo.path,
+                }
+            });
+
+        modal.onDidDismiss().then(result => {
+            if (result !== null) {
+                const editedImage = result.data;
+
+                this.storage.get(STORAGE_KEY).then(images => {
+                    const arr = JSON.parse(images);
+                    arr.find(item => item.timestamp == editedImage.timestamp).fullName = editedImage.name;
+                    arr.find(item => item.timestamp == editedImage.timestamp).photographer = editedImage.photographer;
+                    arr.find(item => item.timestamp == editedImage.timestamp).phone = editedImage.phone;
+                    arr.find(item => item.timestamp == editedImage.timestamp).congregation = editedImage.congregation;
+
+                    this.storage.remove(STORAGE_KEY);
+                    this.storage.set(STORAGE_KEY, JSON.stringify(arr));
+
+                    this.loadStoredImages();
+                });
+
+
+            }
+        });
+
+        return await modal.present();
     }
 
     ionViewWillEnter() {
@@ -54,6 +101,11 @@ export class SyncPage implements OnInit {
                         path: resPath,
                         filePath: filePath,
                         code: img.code,
+                        phone: img.phone,
+                        congregation: img.congregation,
+                        event: img.event,
+                        timestamp: img.timestamp,
+                        photographer: img.photographer,
                         fullName: img.fullName
                     });
                 }
@@ -97,7 +149,7 @@ export class SyncPage implements OnInit {
     startUpload(imgEntry, position) {
         this.file.resolveLocalFilesystemUrl(imgEntry.filePath)
             .then(entry => {
-                (<FileEntry>entry).file(file => this.readFile(file));
+                (<FileEntry>entry).file(file => this.readFile(imgEntry, file));
 
                 this.deleteImage(imgEntry, position);
             })
@@ -106,14 +158,24 @@ export class SyncPage implements OnInit {
             });
     }
 
-    readFile(file: any) {
+    readFile(imgEntry, file: any) {
         const reader = new FileReader();
         reader.onloadend = () => {
             const formData = new FormData();
             const imgBlob = new Blob([reader.result], {
                 type: file.type
             });
+
+            const fullDate = new Date(imgEntry.timestamp);
+
+            formData.append('name', imgEntry.fullName);
+            formData.append('code', imgEntry.code);
+            formData.append('event', imgEntry.event);
+            formData.append('photographer', imgEntry.photographer);
+            formData.append('congregation', imgEntry.congregation);
+            formData.append('phone', imgEntry.phone);
             formData.append('file', imgBlob, file.name);
+            formData.append('timestamp', fullDate.getFullYear() + '-' + (fullDate.getMonth() + 1) + '-' + fullDate.getDate());
             this.uploadImageData(formData);
         };
         reader.readAsArrayBuffer(file);
@@ -125,7 +187,10 @@ export class SyncPage implements OnInit {
         });
         await loading.present();
 
-        this.http.post('http://localhost:8888/upload.php', formData)
+        // https://webhook.site/09ec3ce0-1fff-4a16-b3d2-794611283f42
+        // http://165.22.129.37/api/upload
+
+        this.http.post('http://165.22.129.37/api/upload', formData)
             .pipe(
                 finalize(() => {
                     loading.dismiss();
@@ -133,9 +198,9 @@ export class SyncPage implements OnInit {
             )
             .subscribe(res => {
                 if (res['success']) {
-                    this.presentToast('File upload complete.');
+                    this.presentToast('File upload complete!');
                 } else {
-                    this.presentToast('File upload failed.');
+                    this.presentToast('File upload failed :(');
                 }
             });
     }

@@ -1,37 +1,40 @@
 <ion-header>
     <ion-toolbar color="primary">
         <ion-title>
-            Fotografar
+            Editar Fotografia
         </ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
-        <ion-item>
+        <ion-input type="hidden" formControlName="timestamp" readonly [value]="timestamp"></ion-input>
+        <ion-item slot="start">
+            <ion-img [src]="img"></ion-img>
+        </ion-item>
+        <ion-item id="fotografar-input4">
             <ion-label>
                 Evento
             </ion-label>
             <ion-input type="text" formControlName="event" readonly [value]="event"></ion-input>
         </ion-item>
-        <ion-item *ngIf="photographer != ''">
+        <ion-item id="fotografar-input3">
             <ion-label>
                 Fotógrafo
             </ion-label>
-            <ion-input type="text" formControlName="photographer" readonly [value]="photographer"></ion-input>
+            <ion-input type="text" formControlName="photographer" [value]="photographer"></ion-input>
         </ion-item>
-        <div class="spacer" style="width:300px;height:24px;" id="fotografar-spacer8"></div>
-        <ion-item>
+        <ion-item id="fotografar-input1">
             <ion-label>
                 Código
             </ion-label>
-            <ion-input type="text" readonly formControlName="code" [value]="code"></ion-input>
+            <ion-input type="text" formControlName="code" readonly [value]="code"></ion-input>
         </ion-item>
-        <ion-item>
+        <ion-item id="fotografar-input2">
             <ion-label>
                 Nome
             </ion-label>
-            <ion-input type="text" placeholder="Nome" formControlName="name" autocapitalize="on" autocomplete="on"></ion-input>
+            <ion-input type="text" placeholder="Nome" formControlName="name" [value]="name"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
@@ -43,16 +46,15 @@
             <ion-label>
                 Congregação
             </ion-label>
-            <ion-input type="text" placeholder="Congregação" formControlName="congregation" autocapitalize="on" autocomplete="on"></ion-input>
+            <ion-input type="text" placeholder="Congregação" formControlName="congregation"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>
-                Data da foto {{ photoDate }}
+                Data da foto {{ fullDate }}
             </ion-label>
         </ion-item>
-        <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
-            <ion-icon slot="start" name="camera"></ion-icon>
-            Selecione uma imagem
+        <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="dismiss()">
+            Editar
         </ion-button>
     </form>
 </ion-content>
