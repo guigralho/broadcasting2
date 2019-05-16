@@ -10,19 +10,35 @@
   <h3 *ngIf="images.length == 0" text-center>Nenhuma foto disponível</h3>
 
   <ion-list>
-    <ion-item *ngFor="let img of images; index as pos" text-wrap>
-      <ion-thumbnail slot="start" (click)="editPhoto(img)">
-        <ion-img [src]="img.path"></ion-img>
-      </ion-thumbnail>
-      <ion-label (click)="editPhoto(img)">
-        {{ img.code }} - {{ img.fullName }}
-      </ion-label>
-      <ion-button slot="end" fill="clear" (click)="startUpload(img, pos)">
+    <ion-item-sliding *ngFor="let img of images; index as pos" text-wrap>
+      <ion-item-options side="start">
+        <ion-item-option (click)="startUpload(img, pos)">
+          <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteImage(img, pos)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+      <ion-item>
+        <ion-thumbnail slot="start" (click)="editPhoto(img)">
+          <ion-img [src]="img.path"></ion-img>
+        </ion-thumbnail>
+
+        <ion-label (click)="editPhoto(img)">
+          <p>Código: {{ img.code }}</p>
+          {{ img.fullName }}
+        </ion-label>
+      </ion-item>
+
+
+      <!--<ion-button slot="end" fill="clear" (click)="startUpload(img, pos)">
         <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
       </ion-button>
+
       <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
-    </ion-item>
+      </ion-button>-->
+    </ion-item-sliding>
   </ion-list>
 </ion-content>

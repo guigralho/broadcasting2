@@ -9,10 +9,16 @@
 <ion-content padding>
     <form id="fotografar-form1" [formGroup]="photoForm">
         <ion-item>
-            <ion-label>
-                Evento
-            </ion-label>
-            <ion-input type="text" formControlName="event" readonly [value]="event"></ion-input>
+            <ion-text>
+                <h4>{{ event }}</h4>
+            </ion-text>
+            <ion-input type="hidden" formControlName="event" readonly [value]="event"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-text>
+                <h1>Código: {{ code }}</h1>
+            </ion-text>
+            <ion-input type="hidden" readonly formControlName="code" [value]="code"></ion-input>
         </ion-item>
         <ion-item *ngIf="photographer != ''">
             <ion-label>
@@ -21,12 +27,6 @@
             <ion-input type="text" formControlName="photographer" readonly [value]="photographer"></ion-input>
         </ion-item>
         <div class="spacer" style="width:300px;height:24px;" id="fotografar-spacer8"></div>
-        <ion-item>
-            <ion-label>
-                Código
-            </ion-label>
-            <ion-input type="text" readonly formControlName="code" [value]="code"></ion-input>
-        </ion-item>
         <ion-item>
             <ion-label>
                 Nome
@@ -55,4 +55,5 @@
             Selecione uma imagem
         </ion-button>
     </form>
+
 </ion-content>

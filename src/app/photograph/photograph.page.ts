@@ -63,7 +63,7 @@ export class PhotographPage implements OnInit {
             this.photographer = info.name;
         });
 
-        this.code = Math.random().toString(36).substring(7);
+        this.code = Math.random().toString(36).substring(7).toUpperCase();
         const date = new Date();
         this.photoDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     }

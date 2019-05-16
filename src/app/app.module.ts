@@ -41,7 +41,7 @@ import {EventService} from '../service/event.service';
         File,
         WebView,
         EventService,
-        FilePath
+        FilePath,
     ],
     bootstrap: [AppComponent]
 })

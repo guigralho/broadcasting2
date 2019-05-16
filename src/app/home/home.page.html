@@ -3,7 +3,7 @@
   <img src="assets/img/Sl7ZoABwQWBkJ47TkKWx_jw.svg" style="display:block;width:50%;height:auto;margin-top:auto;margin-left:auto;margin-right:auto;" />
   <ion-item style="padding-top: 50px">
     <ion-label>Evento</ion-label>
-    <ion-select placeholder="Selecione" [(ngModel)]="event" (ngModelChange)="saveInfo()">
+    <ion-select placeholder="Selecione" [(ngModel)]="event" (ngModelChange)="saveInfo()" style="max-width: 80%;width:80%">
       <ion-select-option *ngFor="let event of events" [value]="event.name">{{ event.name }}</ion-select-option>
     </ion-select>
   </ion-item>
