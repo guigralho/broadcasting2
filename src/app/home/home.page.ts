@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { NavController } from '@ionic/angular';
 import {Storage} from '@ionic/storage';
 import {EventService} from '../../service/event.service';
+import {PhotographerService} from '../../service/photographer.service';
 
 const STORAGE_KEY = 'my_images';
 
@@ -13,6 +14,7 @@ const STORAGE_KEY = 'my_images';
 export class HomePage implements OnInit {
     images = [];
     events: any;
+    photographers: any;
 
     count: number;
     event: string;
@@ -21,6 +23,7 @@ export class HomePage implements OnInit {
     constructor(
         public navCtrl: NavController,
         public eventService: EventService,
+        public photographerService: PhotographerService,
         private storage: Storage,
     ) { }
 
@@ -34,6 +37,12 @@ export class HomePage implements OnInit {
 
         this.eventService.getEvents().subscribe(response => {
             this.events = response;
+        }, error => {
+            alert(error.error);
+        });
+
+        this.photographerService.getPhotographers().subscribe(response => {
+            this.photographers = response;
         }, error => {
             alert(error.error);
         });

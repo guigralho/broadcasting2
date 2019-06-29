@@ -46,9 +46,13 @@
             <ion-input type="text" placeholder="Congregação" formControlName="congregation" autocapitalize="on" autocomplete="on"></ion-input>
         </ion-item>
         <ion-item>
+            <ion-textarea rows="7" placeholder="Observação" formControlName="observation" autocapitalize="on"></ion-textarea>
+        </ion-item>
+        <ion-item>
             <ion-label>
-                Data da foto {{ photoDate }}
+                Data
             </ion-label>
+            <ion-input type="text" readonly formControlName="photoDate" [value]="photoDate"></ion-input>
         </ion-item>
         <ion-button [disabled]="!photoForm.valid" fill="solid" expand="full" color="primary" (click)="selectImage()">
             <ion-icon slot="start" name="camera"></ion-icon>

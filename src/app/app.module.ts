@@ -20,6 +20,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {EventService} from '../service/event.service';
+import {PhotographerService} from '../service/photographer.service';
 
 @NgModule({
     declarations: [AppComponent],
@@ -41,6 +42,7 @@ import {EventService} from '../service/event.service';
         File,
         WebView,
         EventService,
+        PhotographerService,
         FilePath,
     ],
     bootstrap: [AppComponent]

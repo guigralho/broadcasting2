@@ -50,6 +50,8 @@ export class PhotographPage implements OnInit {
             'photographer': [''],
             'phone': [''],
             'congregation': [''],
+            'observation': [''],
+            'photoDate': [''],
         });
     }
 
@@ -58,14 +60,24 @@ export class PhotographPage implements OnInit {
     ionViewWillEnter() {
         this.event = '';
         this.photographer = '';
+        this.code = '';
         this.storage.get('photograph_info').then(info => {
             this.event = info.event;
             this.photographer = info.name;
+
+            this.code = this.photographer.substring(0, 3).toUpperCase() + '-' + Math.random().toString(36).substring(7).toUpperCase();
         });
 
-        this.code = Math.random().toString(36).substring(7).toUpperCase();
-        const date = new Date();
-        this.photoDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        const today = new Date();
+        const date = today.getDate() + '/' + this.pad((today.getMonth() + 1), 2, '') + '/' + today.getFullYear();
+        const time = today.getHours() + ':' + this.pad(today.getMinutes(), 2, '') + ':' + this.pad(today.getSeconds(), 2, '');
+        this.photoDate = date + ' ' + time;
+    }
+
+    pad(n, width, z) {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
     pathForImage(img) {
@@ -162,7 +174,9 @@ export class PhotographPage implements OnInit {
                 code: this.photoForm.value.code,
                 phone: this.photoForm.value.phone,
                 congregation: this.photoForm.value.congregation,
-                fullName: this.photoForm.value.name
+                fullName: this.photoForm.value.name,
+                observation: this.photoForm.value.observation,
+                photoDate: this.photoForm.value.photoDate,
             };
 
             if (!arr) {

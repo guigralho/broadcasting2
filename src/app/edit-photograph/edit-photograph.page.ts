@@ -19,7 +19,8 @@ export class EditPhotographPage implements OnInit {
     @Input() img: string;
     @Input() phone: string;
     @Input() congregation: string;
-    @Input() fullDate: string;
+    @Input() observation: string;
+    @Input() photoDate: string;
 
     constructor(
         private modalController: ModalController,
@@ -39,6 +40,8 @@ export class EditPhotographPage implements OnInit {
             'timestamp': [this.timestamp],
             'phone': [this.phone],
             'congregation': [this.congregation],
+            'observation': [this.observation],
+            'photoDate': [this.photoDate],
         });
     }
 

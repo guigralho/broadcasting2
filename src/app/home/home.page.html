@@ -8,6 +8,10 @@
     </ion-select>
   </ion-item>
   <ion-item style="margin-top: 15px">
-    <ion-input placeholder="Fotógrafo" type="text" [(ngModel)]="photographer" (ngModelChange)="saveInfo()"></ion-input>
+    <ion-label>Fotógrafo</ion-label>
+    <ion-select placeholder="Selecione" [(ngModel)]="photographer" (ngModelChange)="saveInfo()" style="max-width: 70%;width:70%">
+      <ion-select-option *ngFor="let photographer of photographers" [value]="photographer.name">{{ photographer.name }}</ion-select-option>
+    </ion-select>
+    <!--<ion-input placeholder="Fotógrafo" type="text" [(ngModel)]="photographer" (ngModelChange)="saveInfo()"></ion-input>-->
   </ion-item>
 </ion-content>

@@ -41,15 +41,12 @@ export class SyncPage implements OnInit {
     }
 
     async editPhoto(photo) {
-        const d = new Date(photo.timestamp);
-        const fullDate = d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
-
         const modal =
             await this.modalController.create({
                 component: EditPhotographPage,
                 componentProps: {
                     timestamp: photo.timestamp,
-                    fullDate: fullDate,
+                    photoDate: photo.photoDate,
                     name: photo.fullName,
                     code: photo.code,
                     photographer: photo.photographer,
@@ -57,6 +54,7 @@ export class SyncPage implements OnInit {
                     phone: photo.phone,
                     congregation: photo.congregation,
                     img: photo.path,
+                    observation: photo.observation,
                 }
             });
 
@@ -70,6 +68,7 @@ export class SyncPage implements OnInit {
                     arr.find(item => item.timestamp == editedImage.timestamp).photographer = editedImage.photographer;
                     arr.find(item => item.timestamp == editedImage.timestamp).phone = editedImage.phone;
                     arr.find(item => item.timestamp == editedImage.timestamp).congregation = editedImage.congregation;
+                    arr.find(item => item.timestamp == editedImage.timestamp).observation = editedImage.observation;
 
                     this.storage.remove(STORAGE_KEY);
                     this.storage.set(STORAGE_KEY, JSON.stringify(arr));
@@ -106,7 +105,9 @@ export class SyncPage implements OnInit {
                         event: img.event,
                         timestamp: img.timestamp,
                         photographer: img.photographer,
-                        fullName: img.fullName
+                        fullName: img.fullName,
+                        observation: img.observation,
+                        photoDate: img.photoDate,
                     });
                 }
             }
@@ -175,7 +176,8 @@ export class SyncPage implements OnInit {
             formData.append('congregation', imgEntry.congregation);
             formData.append('phone', imgEntry.phone);
             formData.append('file', imgBlob, file.name);
-            formData.append('timestamp', fullDate.getFullYear() + '-' + (fullDate.getMonth() + 1) + '-' + fullDate.getDate());
+            formData.append('timestamp', imgEntry.photoDate);
+            formData.append('observation', imgEntry.observation);
             this.uploadImageData(formData);
         };
         reader.readAsArrayBuffer(file);
